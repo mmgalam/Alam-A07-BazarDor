@@ -42,7 +42,7 @@ export default async function ProductPage({ params }: PageProps) {
   }
 
   const response = await fetch(
-    `https://api.abcz.workers.dev/api/bazardor/products/${id}`,
+    `https://openapi.programming-hero.com/api/bazardor/products/${id}`,
   );
 
   if (response.status === 404) {
