@@ -8,7 +8,7 @@ const Hero = () => {
   }).format(new Date());
   return (
     <section className="bg-[#f3f7f2] py-6 sm:py-6">
-      <div className="mx-auto max-w-6xl px-3 py-6 sm:px-4">
+      <div className="container mx-auto py-6 sm:px-4">
         <div className="flex justify-between items-center rounded-2xl border border-emerald-900/10 bg-[#f8faf7] px-5 py-5 sm:px-8 sm:py-7 lg:px-10">
           {/* Left Side Content */}
           <div className="relative z-10 max-w-2xl">

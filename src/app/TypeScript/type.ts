@@ -18,7 +18,13 @@ export interface Product {
   lastWeek: number;
   lastMonth: number;
   change: {
-    dir: "up" | "down" ;
+    dir: "up" | "down" | "same";
     pct: number;
   };
+  markets: {
+    market: string;
+    division: string;
+    min: number;
+    max: number;
+  }[];
 }
