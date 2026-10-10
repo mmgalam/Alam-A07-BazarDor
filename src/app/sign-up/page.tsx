@@ -13,59 +13,58 @@ export default function SignUpPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-  event.preventDefault();
+    event.preventDefault();
 
-  if (loading) return;
+    if (loading) return;
 
-  const trimmedName = name.trim();
-  const trimmedEmail = email.trim();
+    const trimmedName = name.trim();
+    const trimmedEmail = email.trim();
 
-  if (!trimmedName || !trimmedEmail) {
-    toast.error("নাম ও ইমেইল লিখুন।");
-    return;
-  }
-
-  if (password.length < 8) {
-    toast.error("পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের হতে হবে।");
-    return;
-  }
-
-  if (password !== confirmPassword) {
-    toast.error("দুটি পাসওয়ার্ড মিলছে না।");
-    return;
-  }
-
-  setLoading(true);
-
-  try {
-    const { error: signUpError } = await signUp.email({
-      name: trimmedName,
-      email: trimmedEmail,
-      password,
-    });
-
-    if (signUpError) {
-      toast.error(
-        signUpError.message || "অ্যাকাউন্ট তৈরি করা যায়নি।",
-      );
+    if (!trimmedName || !trimmedEmail) {
+      toast.error("নাম ও ইমেইল লিখুন।");
       return;
     }
 
-    toast.success("আপনার অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে!");
+    if (password.length < 8) {
+      toast.error("পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের হতে হবে।");
+      return;
+    }
 
-    router.replace("/");
-    router.refresh();
-  } catch (err) {
-    console.error("Sign-up failed:", err);
-    toast.error("সমস্যা হয়েছে। আবার চেষ্টা করুন।");
-  } finally {
-    setLoading(false);
-  }
-};
+    if (password !== confirmPassword) {
+      toast.error("দুটি পাসওয়ার্ড মিলছে না।");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const result = await signUp.email({
+        name: trimmedName,
+        email: trimmedEmail,
+        password,
+      });
+
+      if (result.error) {
+        console.error("Sign-up API error:", result.error);
+        toast.error(result.error.message || "অ্যাকাউন্ট তৈরি করা যায়নি।");
+        return;
+      }
+
+      toast.success("আপনার অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে!");
+
+      router.replace("/");
+      router.refresh();
+    } catch (err) {
+      console.error("Sign-up request failed:", err);
+
+      toast.error("সার্ভারের সঙ্গে সংযোগ করা যাচ্ছে না। পরে আবার চেষ্টা করুন।");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <main className="flex min-h-[calc(100vh-160px)] items-center justify-center bg-[#f0f5f0] px-4 py-10">
@@ -74,7 +73,6 @@ export default function SignUpPage() {
           <h1 className="text-2xl font-extrabold tracking-tight text-[#25352b]">
             অ্যাকাউন্ট তৈরি করুন
           </h1>
-
           <p className="mt-2 text-sm leading-6 text-neutral-500">
             বিনা খরচে সাইন আপ করে বাজারদরের বিস্তারিত তথ্য দেখুন।
           </p>
@@ -88,7 +86,6 @@ export default function SignUpPage() {
             >
               আপনার নাম
             </label>
-
             <input
               id="name"
               name="name"
@@ -96,8 +93,8 @@ export default function SignUpPage() {
               autoComplete="name"
               placeholder="আপনার পূর্ণ নাম"
               value={name}
-              onChange={(event) => setName(event.target.value)}
-              className="w-full rounded-lg border border-[#dce5dc] bg-white px-3 py-3 text-sm outline-none transition focus:border-emerald-700 focus:ring-2 focus:ring-emerald-700/10"
+              onChange={(e) => setName(e.target.value)}
+              className="w-full rounded-lg border border-[#dce5dc] bg-white px-3 py-3 text-sm outline-none focus:border-emerald-700 focus:ring-2 focus:ring-emerald-700/10"
               required
               disabled={loading}
             />
@@ -110,7 +107,6 @@ export default function SignUpPage() {
             >
               ইমেইল ঠিকানা
             </label>
-
             <input
               id="email"
               name="email"
@@ -118,8 +114,8 @@ export default function SignUpPage() {
               autoComplete="email"
               placeholder="you@example.com"
               value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              className="w-full rounded-lg border border-[#dce5dc] bg-white px-3 py-3 text-sm outline-none transition focus:border-emerald-700 focus:ring-2 focus:ring-emerald-700/10"
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full rounded-lg border border-[#dce5dc] bg-white px-3 py-3 text-sm outline-none focus:border-emerald-700 focus:ring-2 focus:ring-emerald-700/10"
               required
               disabled={loading}
             />
@@ -132,7 +128,6 @@ export default function SignUpPage() {
             >
               পাসওয়ার্ড
             </label>
-
             <input
               id="password"
               name="password"
@@ -141,8 +136,8 @@ export default function SignUpPage() {
               minLength={8}
               placeholder="কমপক্ষে ৮ অক্ষর"
               value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              className="w-full rounded-lg border border-[#dce5dc] bg-white px-3 py-3 text-sm outline-none transition focus:border-emerald-700 focus:ring-2 focus:ring-emerald-700/10"
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full rounded-lg border border-[#dce5dc] bg-white px-3 py-3 text-sm outline-none focus:border-emerald-700 focus:ring-2 focus:ring-emerald-700/10"
               required
               disabled={loading}
             />
@@ -155,7 +150,6 @@ export default function SignUpPage() {
             >
               পাসওয়ার্ড নিশ্চিত করুন
             </label>
-
             <input
               id="confirmPassword"
               name="confirmPassword"
@@ -164,22 +158,12 @@ export default function SignUpPage() {
               minLength={8}
               placeholder="পাসওয়ার্ড আবার লিখুন"
               value={confirmPassword}
-              onChange={(event) => setConfirmPassword(event.target.value)}
-              className="w-full rounded-lg border border-[#dce5dc] bg-white px-3 py-3 text-sm outline-none transition focus:border-emerald-700 focus:ring-2 focus:ring-emerald-700/10"
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="w-full rounded-lg border border-[#dce5dc] bg-white px-3 py-3 text-sm outline-none focus:border-emerald-700 focus:ring-2 focus:ring-emerald-700/10"
               required
               disabled={loading}
             />
           </div>
-
-          {error && (
-            <p
-              role="alert"
-              aria-live="polite"
-              className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700"
-            >
-              {error}
-            </p>
-          )}
 
           <button
             type="submit"
@@ -203,7 +187,7 @@ export default function SignUpPage() {
         <div className="mt-5 border-t border-[#e5eae4] pt-4 text-center">
           <Link
             href="/"
-            className="text-sm text-neutral-500 transition hover:text-emerald-800"
+            className="text-sm text-neutral-500 hover:text-emerald-800"
           >
             ← হোম পেজে ফিরে যান
           </Link>
