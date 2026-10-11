@@ -6,6 +6,11 @@ import { useState, type FormEvent } from "react";
 import { signUp } from "../../lib/auth-client";
 import { toast } from "react-toastify";
 
+const inputClass =
+  "w-full rounded-lg border border-[#dce5dc] bg-white px-3 py-2.5 text-base outline-none transition focus:border-emerald-700 focus:ring-2 focus:ring-emerald-700/10 disabled:cursor-not-allowed disabled:opacity-60 sm:py-3 sm:text-sm";
+
+const labelClass = "mb-1.5 block text-sm font-medium text-[#25352b] sm:mb-2";
+
 export default function SignUpPage() {
   const router = useRouter();
 
@@ -29,12 +34,12 @@ export default function SignUpPage() {
     }
 
     if (password.length < 8) {
-      toast.error("পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের হতে হবে।");
+      toast.error("পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের হতে হবে।");
       return;
     }
 
     if (password !== confirmPassword) {
-      toast.error("দুটি পাসওয়ার্ড মিলছে না।");
+      toast.error("দুটি পাসওয়ার্ড মিলছে না।");
       return;
     }
 
@@ -49,11 +54,11 @@ export default function SignUpPage() {
 
       if (result.error) {
         console.error("Sign-up API error:", result.error);
-        toast.error(result.error.message || "অ্যাকাউন্ট তৈরি করা যায়নি।");
+        toast.error(result.error.message || "অ্যাকাউন্ট তৈরি করা যায়নি।");
         return;
       }
 
-      toast.success("আপনার অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে!");
+      toast.success("আপনার অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে!");
 
       router.replace("/");
       router.refresh();
@@ -67,23 +72,20 @@ export default function SignUpPage() {
   };
 
   return (
-    <main className="flex min-h-[calc(100vh-160px)] items-center justify-center bg-[#f0f5f0] px-4 py-10">
-      <section className="w-full max-w-md rounded-2xl border border-[#dce5dc] bg-[#fbfcfa] p-6 shadow-sm sm:p-8">
-        <header className="mb-7 text-center">
-          <h1 className="text-2xl font-extrabold tracking-tight text-[#25352b]">
+    <div className="flex min-h-[70dvh] items-start justify-center bg-[#f0f5f0] px-3 py-6 sm:items-center sm:px-4 sm:py-10">
+      <section className="w-full max-w-md rounded-xl border border-[#dce5dc] bg-[#fbfcfa] p-4 shadow-sm min-[400px]:p-6 sm:rounded-2xl sm:p-8">
+        <header className="mb-5 text-center sm:mb-7">
+          <h1 className="text-xl font-extrabold tracking-tight text-[#25352b] sm:text-2xl">
             অ্যাকাউন্ট তৈরি করুন
           </h1>
-          <p className="mt-2 text-sm leading-6 text-neutral-500">
+          <p className="mt-1.5 text-xs leading-5 text-neutral-500 sm:mt-2 sm:text-sm sm:leading-6">
             বিনা খরচে সাইন আপ করে বাজারদরের বিস্তারিত তথ্য দেখুন।
           </p>
         </header>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-3.5 sm:space-y-4">
           <div>
-            <label
-              htmlFor="name"
-              className="mb-2 block text-sm font-medium text-[#25352b]"
-            >
+            <label htmlFor="name" className={labelClass}>
               আপনার নাম
             </label>
             <input
@@ -94,17 +96,14 @@ export default function SignUpPage() {
               placeholder="আপনার পূর্ণ নাম"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full rounded-lg border border-[#dce5dc] bg-white px-3 py-3 text-sm outline-none focus:border-emerald-700 focus:ring-2 focus:ring-emerald-700/10"
+              className={inputClass}
               required
               disabled={loading}
             />
           </div>
 
           <div>
-            <label
-              htmlFor="email"
-              className="mb-2 block text-sm font-medium text-[#25352b]"
-            >
+            <label htmlFor="email" className={labelClass}>
               ইমেইল ঠিকানা
             </label>
             <input
@@ -115,18 +114,15 @@ export default function SignUpPage() {
               placeholder="you@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-lg border border-[#dce5dc] bg-white px-3 py-3 text-sm outline-none focus:border-emerald-700 focus:ring-2 focus:ring-emerald-700/10"
+              className={inputClass}
               required
               disabled={loading}
             />
           </div>
 
           <div>
-            <label
-              htmlFor="password"
-              className="mb-2 block text-sm font-medium text-[#25352b]"
-            >
-              পাসওয়ার্ড
+            <label htmlFor="password" className={labelClass}>
+              পাসওয়ার্ড
             </label>
             <input
               id="password"
@@ -137,18 +133,15 @@ export default function SignUpPage() {
               placeholder="কমপক্ষে ৮ অক্ষর"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-lg border border-[#dce5dc] bg-white px-3 py-3 text-sm outline-none focus:border-emerald-700 focus:ring-2 focus:ring-emerald-700/10"
+              className={inputClass}
               required
               disabled={loading}
             />
           </div>
 
           <div>
-            <label
-              htmlFor="confirmPassword"
-              className="mb-2 block text-sm font-medium text-[#25352b]"
-            >
-              পাসওয়ার্ড নিশ্চিত করুন
+            <label htmlFor="confirmPassword" className={labelClass}>
+              পাসওয়ার্ড নিশ্চিত করুন
             </label>
             <input
               id="confirmPassword"
@@ -156,10 +149,10 @@ export default function SignUpPage() {
               type="password"
               autoComplete="new-password"
               minLength={8}
-              placeholder="পাসওয়ার্ড আবার লিখুন"
+              placeholder="পাসওয়ার্ড আবার লিখুন"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full rounded-lg border border-[#dce5dc] bg-white px-3 py-3 text-sm outline-none focus:border-emerald-700 focus:ring-2 focus:ring-emerald-700/10"
+              className={inputClass}
               required
               disabled={loading}
             />
@@ -168,23 +161,23 @@ export default function SignUpPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-lg bg-emerald-700 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-800 focus:outline-none focus:ring-2 focus:ring-emerald-700 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+            className="w-full rounded-lg bg-emerald-700 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-800 focus:outline-none focus:ring-2 focus:ring-emerald-700 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60 sm:py-3"
           >
             {loading ? "অ্যাকাউন্ট তৈরি হচ্ছে..." : "সাইন আপ করুন"}
           </button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-neutral-600">
+        <p className="mt-5 text-center text-sm text-neutral-600 sm:mt-6">
           ইতিমধ্যে অ্যাকাউন্ট আছে?{" "}
           <Link
             href="/sign-in"
-            className="font-semibold text-emerald-700 hover:underline"
+            className="whitespace-nowrap font-semibold text-emerald-700 hover:underline"
           >
             সাইন ইন করুন
           </Link>
         </p>
 
-        <div className="mt-5 border-t border-[#e5eae4] pt-4 text-center">
+        <div className="mt-4 border-t border-[#e5eae4] pt-3 text-center sm:mt-5 sm:pt-4">
           <Link
             href="/"
             className="text-sm text-neutral-500 hover:text-emerald-800"
@@ -193,6 +186,6 @@ export default function SignUpPage() {
           </Link>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

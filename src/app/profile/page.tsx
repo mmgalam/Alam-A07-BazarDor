@@ -1,4 +1,3 @@
-
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
@@ -15,5 +14,13 @@ export default async function ProfileRoute() {
     redirect("/sign-in");
   }
 
-  return <ProfilePage />;
+  return (
+    <ProfilePage
+      user={{
+        id: session.user.id,
+        name: session.user.name ?? "",
+        email: session.user.email,
+      }}
+    />
+  );
 }
