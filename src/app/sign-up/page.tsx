@@ -55,7 +55,7 @@ export default function SignUpPage() {
 
       toast.success("আপনার অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে!");
 
-      router.replace("/");
+      router.replace("https://bazardoralam.netlify.app/");
       router.refresh();
     } catch (err) {
       console.error("Sign-up request failed:", err);
