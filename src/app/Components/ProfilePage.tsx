@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { UserRound, Mail, LogOut, Save, LoaderCircle } from "lucide-react";
+import { toast } from "react-toastify";
 import { authClient } from "@/lib/auth-client";
 
 type ProfileUser = {
@@ -165,24 +166,24 @@ function ProfileForm({ initialName, email }: ProfileFormProps) {
 export default function ProfilePage({ user }: ProfilePageProps) {
   const router = useRouter();
   const [signingOut, setSigningOut] = useState(false);
-  const [signOutError, setSignOutError] = useState("");
 
   async function handleSignOut() {
-    setSignOutError("");
+    if (signingOut) return;
     setSigningOut(true);
 
     try {
       const result = await authClient.signOut();
 
       if (result.error) {
-        setSignOutError("সাইন আউট করা যায়নি। আবার চেষ্টা করুন।");
+        toast.error("সাইন আউট করা যায়নি। আবার চেষ্টা করুন।");
         return;
       }
 
+      toast.success("সফলভাবে সাইন আউট হয়েছে।");
       router.replace("/sign-in");
       router.refresh();
     } catch {
-      setSignOutError("সাইন আউট করার সময় সমস্যা হয়েছে।");
+      toast.error("সাইন আউট করার সময় সমস্যা হয়েছে।");
     } finally {
       setSigningOut(false);
     }
@@ -236,15 +237,6 @@ export default function ProfilePage({ user }: ProfilePageProps) {
             </button>
           </div>
         </section>
-
-        {signOutError && (
-          <p
-            role="alert"
-            className="mt-4 rounded-lg bg-red-50 px-3 py-2.5 text-sm text-red-700 sm:px-4 sm:py-3"
-          >
-            {signOutError}
-          </p>
-        )}
 
         <ProfileForm key={user.id} initialName={user.name} email={user.email} />
       </div>

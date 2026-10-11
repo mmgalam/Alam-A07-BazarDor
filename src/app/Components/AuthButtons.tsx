@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { UserRound, LogOut, LoaderCircle } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
+import { toast } from "react-toastify";
 
 export default function AuthButtons() {
   const router = useRouter();
@@ -12,6 +13,7 @@ export default function AuthButtons() {
   const [signingOut, setSigningOut] = useState(false);
 
   async function handleSignOut() {
+    if (signingOut) return;
     setSigningOut(true);
 
     try {
@@ -19,13 +21,16 @@ export default function AuthButtons() {
 
       if (result.error) {
         console.error("Sign out failed:", result.error);
+        toast.error("লগ আউট করা যায়নি। আবার চেষ্টা করুন।");
         return;
       }
 
+      toast.success("সফলভাবে লগ আউট হয়েছে।");
       router.replace("/sign-in");
       router.refresh();
     } catch (error) {
       console.error("Sign out failed:", error);
+      toast.error("লগ আউটের সময় সমস্যা হয়েছে।");
     } finally {
       setSigningOut(false);
     }
